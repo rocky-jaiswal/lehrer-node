@@ -1,9 +1,12 @@
+var User = require('./../models/user');
+
 var usersController = function(){
     return {
         create: {
-            auth: 'jwt',
+            auth: false,
             handler: function (request, reply) {
-                reply({success: true});
+                var result =  User.create(request.payload);
+                reply({result: result});
             }
         }
     }

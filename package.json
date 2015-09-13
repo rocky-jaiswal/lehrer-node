@@ -1,5 +1,5 @@
 {
-  "name": "lehrer",
+  "name": "lehrer-node",
   "version": "1.0.0",
   "description": "deutsch lernen",
   "main": "index.js",
@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.2.1",
     "hapi": "^10.0.0",
     "hapi-auth-jwt2": "^5.0.7",
     "pg": "^4.4.1",

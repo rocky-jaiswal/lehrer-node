@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../../config/sequelize');
+var bcrypt    = require('bcryptjs');
 
 var users =  {
     1: {id: 1, email: 'john@example.com'},
@@ -10,23 +11,20 @@ var user = function(){
     var columns = {
         email: {
             type: Sequelize.STRING(500),
-            validate:{
-                isEmail: true,
-                notNull: true
-            }
+            allowNull: false
         },
         encryptedPassword: {
             type: Sequelize.STRING,
             field: 'encrypted_password',
-            validate:{
-                notNull: true,
-                len: [6,200]
-            }
+            allowNull: false
+        },
+        admin: {
+            type: Sequelize.BOOLEAN
         }
     };
 
     var User = sequelize.define('user', columns, { freezeTableName: true });
-
+ 
     //Sync
     User.sync();
 
@@ -38,6 +36,20 @@ var user = function(){
             else {
                 return callback(null, true);
             }
+        },
+        create: function(params){
+            if(params.email === null ||
+               params.password === null ||
+               params.password.length < 6 ||
+               params.password !== params.passwordConfirmation){
+                return false;
+            }
+            var success = true;
+            var encryptedPassword = bcrypt.hashSync(params.password, 10);
+            var _this = this;
+            User.create({encryptedPassword: encryptedPassword})
+                .catch(function(e, _this){console.log(e); _this.success = false;});
+            return success;
         }
     }
 }();
