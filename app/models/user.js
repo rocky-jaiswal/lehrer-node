@@ -1,10 +1,11 @@
-var sequelize = require('../../config/sequelize'),
-    config    = require('../../config/app'),
-    Sequelize = require('sequelize'),
+var config    = require('../../config/app'),
+    db        = require('./db'),
     Promise   = require('bluebird'),
     Bcrypt    = require('bcryptjs')
     Jwt       = require('jsonwebtoken');
 
+var Sequelize = db.Sequelize;
+var sequelize = db.sequelize;
 var SQLUser = function(){
   var columns = {
     email: { type: Sequelize.STRING(500), allowNull: false },
@@ -39,10 +40,13 @@ var User = function () {
 
       promise.then(function (data) {
         if(data === null){
-          reject({error: 'no user found'});
+          reject({error: 'bad username or password'});
         }
         Bcrypt.compare(password, data.dataValues.encryptedPassword, function (err, isValid) {
-          resolve({token: Jwt.sign({ id: data.dataValues.id }, config.dev.secretKey)});
+          if(isValid)
+            resolve({token: Jwt.sign({ id: data.dataValues.id }, config.dev.secretKey)});
+          else
+            reject({error: 'bad username or password'});
         });
       });
 
