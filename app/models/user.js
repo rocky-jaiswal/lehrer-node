@@ -7,31 +7,17 @@ var sequelize = require('../../config/sequelize'),
 
 var SQLUser = function(){
   var columns = {
-    email: {
-      type: Sequelize.STRING(500),
-      allowNull: false
-    },
-    encryptedPassword: {
-      type: Sequelize.STRING,
-      field: 'encrypted_password',
-      allowNull: false
-    },
-    admin: {
-      type: Sequelize.BOOLEAN
-    }
+    email: { type: Sequelize.STRING(500), allowNull: false },
+    encryptedPassword: { type: Sequelize.STRING, field: 'encrypted_password', allowNull: false },
+    admin: { type: Sequelize.BOOLEAN },
+    createdAt: { type: Sequelize.DATE },
+    updatedAt: { type: Sequelize.DATE }
   };
 
   return sequelize.define('user', columns, { freezeTableName: true });
 }();
 
 var User = function () {
-  //Sync
-  SQLUser.sync().then(function (err) {
-    console.log('It worked!');
-  }, function (err) {
-    console.log('An error occurred while creating the table:', err);
-  });
-
   this.validate = function (decoded, request, callback) {
     var promise = SQLUser.find({id: decoded.id});
     promise.then(function (data) {
