@@ -1,34 +1,35 @@
 var Hapi   = require('hapi'),
-    Config = require('./config/app'),
-    Routes = require('./config/routes'),
+    _      = require('lodash'),
+    config = require('./config/app'),
+    routes = require('./config/routes'),
     User   = require('./app/models/user');
 
 // Create a server with a host and port
 var server = new Hapi.Server();
 
 //Server config
-server.connection(Config.dev);
+server.connection(_.pick(config.dev, ['host', 'port']));
 
 //Auth
 server.register(require('hapi-auth-jwt2'), function (err) {
-    if(err){
-        console.log(err);
+  if(err){
+    console.log(err);
+  }
+
+  server.auth.strategy(
+    'jwt', 'jwt',
+    {
+        key: config.dev.secretKey,
+        validateFunc: new User().validate,
+        verifyOptions: { algorithms: [ 'HS256' ] }
     }
+  );
 
-    server.auth.strategy(
-        'jwt', 'jwt',
-        {
-            key: 'NeverShareYourSecret',
-            validateFunc: User.validate,
-            verifyOptions: { algorithms: [ 'HS256' ] }
-        }
-    );
-
-    server.auth.default('jwt');
+  server.auth.default('jwt');
 });
 
 // Add the route
-server.route(Routes.config);
+server.route(routes.config);
 
 // Start the server
 server.start(function () {

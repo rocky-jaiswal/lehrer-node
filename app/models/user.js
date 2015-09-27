@@ -1,57 +1,100 @@
-var Sequelize = require('sequelize');
-var sequelize = require('../../config/sequelize');
-var bcrypt    = require('bcryptjs');
+var sequelize = require('../../config/sequelize'),
+    config    = require('../../config/app'),
+    Sequelize = require('sequelize'),
+    Promise   = require('bluebird'),
+    Bcrypt    = require('bcryptjs')
+    Jwt       = require('jsonwebtoken');
 
-var users =  {
-    1: {id: 1, email: 'john@example.com'},
-    2: {id: 2, email: 'jane@example.com'}
-};
-
-var user = function(){
-    var columns = {
-        email: {
-            type: Sequelize.STRING(500),
-            allowNull: false
-        },
-        encryptedPassword: {
-            type: Sequelize.STRING,
-            field: 'encrypted_password',
-            allowNull: false
-        },
-        admin: {
-            type: Sequelize.BOOLEAN
-        }
-    };
-
-    var User = sequelize.define('user', columns, { freezeTableName: true });
- 
-    //Sync
-    User.sync();
-
-    return {
-        validate: function(decoded, request, callback){
-            if (!users[decoded.id]) {
-                return callback(null, false);
-            }
-            else {
-                return callback(null, true);
-            }
-        },
-        create: function(params){
-            if(params.email === null ||
-               params.password === null ||
-               params.password.length < 6 ||
-               params.password !== params.passwordConfirmation){
-                return false;
-            }
-            var success = true;
-            var encryptedPassword = bcrypt.hashSync(params.password, 10);
-            var _this = this;
-            User.create({encryptedPassword: encryptedPassword})
-                .catch(function(e, _this){console.log(e); _this.success = false;});
-            return success;
-        }
+var SQLUser = function(){
+  var columns = {
+    email: {
+      type: Sequelize.STRING(500),
+      allowNull: false
+    },
+    encryptedPassword: {
+      type: Sequelize.STRING,
+      field: 'encrypted_password',
+      allowNull: false
+    },
+    admin: {
+      type: Sequelize.BOOLEAN
     }
+  };
+
+  return sequelize.define('user', columns, { freezeTableName: true });
 }();
 
-module.exports = user;
+var User = function () {
+  //Sync
+  SQLUser.sync().then(function (err) {
+    console.log('It worked!');
+  }, function (err) {
+    console.log('An error occurred while creating the table:', err);
+  });
+
+  this.validate = function (decoded, request, callback) {
+    var promise = SQLUser.find({id: decoded.id});
+    promise.then(function (data) {
+      if(data === null){
+        return callback(null, false);
+      } else {
+        return callback(null, true);
+      }
+    });
+    promise.catch(function (e) {
+      return callback(null, false);
+    });
+  };
+
+  this.login = function (email, password) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      var promise = that.findWhere({email: email});
+
+      promise.then(function (data) {
+        if(data === null){
+          reject({error: 'no user found'});
+        }
+        Bcrypt.compare(password, data.dataValues.encryptedPassword, function (err, isValid) {
+          resolve({token: Jwt.sign({ id: data.dataValues.id }, config.dev.secretKey)});
+        });
+      });
+
+      promise.catch(function (e) {
+        reject({error: e});
+      });
+    });
+  };
+
+  this.findWhere = function (condition) {
+    return SQLUser.find({where: condition});
+  };
+
+  this.all = function () {
+    return SQLUser.findAll();
+  };
+
+  this.create = function (params) {
+    return new Promise(function (resolve, reject) {
+      if(params.email === null ||
+        params.password === null ||
+        params.password.length < 6 ||
+        params.password !== params.passwordConfirmation){
+          reject({error: 'error while validating data'});
+      }
+
+      var promise = SQLUser.create({email: params.email, 
+                                    encryptedPassword: Bcrypt.hashSync(params.password, 10)});
+
+      promise.then(function (data) {
+        resolve(data.dataValues);
+      });
+
+      promise.catch(function (e) {
+        reject({error: e});
+      });
+    });
+  };
+};
+
+module.exports = User;

@@ -10,8 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.2.1",
+    "bluebird": "^2.10.1",
     "hapi": "^10.0.0",
     "hapi-auth-jwt2": "^5.0.7",
+    "jsonwebtoken": "^5.0.5",
+    "lodash": "^3.10.1",
     "pg": "^4.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.8.0"
