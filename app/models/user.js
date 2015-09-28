@@ -69,20 +69,18 @@ var User = function () {
       if(params.email === null ||
         params.password === null ||
         params.password.length < 6 ||
-        params.password !== params.passwordConfirmation){
+        params.password !== params.passwordConfirmation) {
           reject({error: 'error while validating data'});
+      } else {
+        var promise = SQLUser.create({email: params.email,
+                                      encryptedPassword: Bcrypt.hashSync(params.password, 10)});
+        promise.then(function (data) {
+          resolve(data.dataValues);
+        });
+        promise.catch(function (e) {
+          reject({error: e});
+        });
       }
-
-      var promise = SQLUser.create({email: params.email,
-                                    encryptedPassword: Bcrypt.hashSync(params.password, 10)});
-
-      promise.then(function (data) {
-        resolve(data.dataValues);
-      });
-
-      promise.catch(function (e) {
-        reject({error: e});
-      });
     });
   };
 };
