@@ -6,7 +6,7 @@ var config    = require('../../config/app'),
 
 var Sequelize = db.Sequelize;
 var sequelize = db.sequelize;
-var SQLUser = function(){
+var SQLUser = function () {
   var columns = {
     email: { type: Sequelize.STRING(500), allowNull: false },
     encryptedPassword: { type: Sequelize.STRING, field: 'encrypted_password', allowNull: false },
