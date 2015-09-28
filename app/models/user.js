@@ -73,7 +73,7 @@ var User = function () {
           reject({error: 'error while validating data'});
       }
 
-      var promise = SQLUser.create({email: params.email, 
+      var promise = SQLUser.create({email: params.email,
                                     encryptedPassword: Bcrypt.hashSync(params.password, 10)});
 
       promise.then(function (data) {
