@@ -6,6 +6,7 @@ var config    = require('../../config/app'),
 
 var Sequelize = db.Sequelize;
 var sequelize = db.sequelize;
+
 var SQLUser = function () {
   var columns = {
     email: { type: Sequelize.STRING(500), allowNull: false },
@@ -83,6 +84,10 @@ var User = function () {
       }
     });
   };
+
+  this.sqlUser = function() {
+    return SQLUser;
+  }
 };
 
 module.exports = User;
