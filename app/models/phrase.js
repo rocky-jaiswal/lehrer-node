@@ -1,12 +1,12 @@
 var config    = require('../../config/app'),
     db        = require('./db'),
-    Promise   = require('bluebird'),
-    User      = require('./user');
+    Promise   = require('bluebird');
+    //User      = require('./user');
 
 var Sequelize = db.Sequelize;
 var sequelize = db.sequelize;
 
-var SQLPhrase = function () {
+var SQLPhrase = function() {
   var columns = {
     title: { type: Sequelize.TEXT, allowNull: false },
     description: { type: Sequelize.TEXT, allowNull: false },
@@ -17,28 +17,27 @@ var SQLPhrase = function () {
   return sequelize.define('phrase', columns, { freezeTableName: true });
 }();
 
-var sqlUser = new User().sqlUser();
-SQLPhrase.belongsTo(sqlUser);
+//var sqlUser = new User().sqlUser();
+//SQLPhrase.belongsTo(sqlUser);
 
-var Phrase = function () {
+var Phrase = function() {
   this.findWhere = function (condition) {
     return SQLPhrase.find({where: condition});
   };
 
-  this.all = function () {
+  this.all = function() {
     return SQLPhrase.findAll();
   };
 
-  this.create = function (title, description, userId) {
-    return new Promise(function (resolve, reject) {
-      console.log(userId);
+  this.create = function(title, description, userId) {
+    return new Promise(function(resolve, reject) {
       var promise = SQLPhrase.create({title: title,
                                       description: description,
                                       userId: parseInt(userId)});
-      promise.then(function (data) {
+      promise.then(function(data) {
         resolve(data.dataValues);
       });
-      promise.catch(function (e) {
+      promise.catch(function(e) {
         reject({error: e});
       });
     });
@@ -46,7 +45,7 @@ var Phrase = function () {
 
   this.sqlPhrase = function() {
     return SQLPhrase;
-  }
+  };
 };
 
 module.exports = Phrase;

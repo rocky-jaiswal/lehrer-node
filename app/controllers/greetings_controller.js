@@ -1,10 +1,7 @@
-var greetingsController = function(){
+var greetingsController = function() {
   return {
-    hello: {
-      auth: 'jwt',
-      handler: function (request, reply) {
-        reply({greeting: 'hello world'});
-      }
+    hello: function(request, reply) {
+      reply({greeting: 'hello world'});
     }
   }
 }();

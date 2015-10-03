@@ -1,5 +1,6 @@
 var config    = require('../../config/app'),
     db        = require('./db'),
+    Phrase    = require('./phrase');
     Promise   = require('bluebird'),
     Bcrypt    = require('bcryptjs')
     Jwt       = require('jsonwebtoken');
@@ -19,27 +20,30 @@ var SQLUser = function () {
   return sequelize.define('user', columns, { freezeTableName: true });
 }();
 
-var User = function () {
+var sqlPhrase = new Phrase().sqlPhrase();
+SQLUser.hasMany(sqlPhrase);
+
+var User = function() {
   this.validate = function (decoded, request, callback) {
     var promise = SQLUser.find({id: decoded.id});
-    promise.then(function (data) {
+    promise.then(function(data) {
       if(data === null){
         return callback(null, false);
       } else {
         return callback(null, true);
       }
     });
-    promise.catch(function (e) {
+    promise.catch(function(e) {
       return callback(null, false);
     });
   };
 
-  this.login = function (email, password) {
+  this.login = function(email, password) {
     var that = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       var promise = that.findWhere({email: email});
 
-      promise.then(function (data) {
+      promise.then(function(data) {
         if(data === null){
           reject({error: 'bad username or password'});
         }
@@ -51,22 +55,22 @@ var User = function () {
         });
       });
 
-      promise.catch(function (e) {
+      promise.catch(function(e) {
         reject({error: e});
       });
     });
   };
 
-  this.findWhere = function (condition) {
+  this.findWhere = function(condition) {
     return SQLUser.find({where: condition});
   };
 
-  this.all = function () {
+  this.all = function() {
     return SQLUser.findAll();
   };
 
-  this.create = function (params) {
-    return new Promise(function (resolve, reject) {
+  this.create = function(params) {
+    return new Promise(function(resolve, reject) {
       if(params.email === null ||
         params.password === null ||
         params.password.length < 6 ||
@@ -75,13 +79,31 @@ var User = function () {
       } else {
         var promise = SQLUser.create({email: params.email,
                                       encryptedPassword: Bcrypt.hashSync(params.password, 10)});
-        promise.then(function (data) {
+        promise.then(function(data) {
           resolve(data.dataValues);
         });
-        promise.catch(function (e) {
+        promise.catch(function(e) {
           reject({error: e});
         });
       }
+    });
+  };
+
+  this.allPhrases = function(userId) {
+    return new Promise(function (resolve, reject) {
+      var promise1 = SQLUser.findById(parseInt(userId));
+      promise1.then(function(user) {
+        var promise2 = user.getPhrases();
+        promise2.then(function(data) {
+          resolve(data);
+        });
+        promise2.catch(function(e) {
+          reject({error: e});
+        });
+      });
+      promise1.catch(function(e) {
+        reject({error: e});
+      });
     });
   };
 

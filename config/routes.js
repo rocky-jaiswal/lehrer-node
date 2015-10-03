@@ -5,11 +5,11 @@ var GreetingsController = require('../app/controllers/greetings_controller'),
 
 var routes = {
   config: [
-    {method: 'GET',    path: '/api/hello',       config: GreetingsController.hello},
-    {method: 'POST',   path: '/api/users',       config: UsersController.create},
-    {method: 'POST',   path: '/api/users/login', config: UsersController.login},
-    {method: 'POST',   path: '/api/phrases',     config: PhrasesController.create},
-    //{method: 'GET',  path: '/api/phrases',     config: PhrasesController.index}
+    {method: 'POST',   path: '/api/users',       config: {auth: false, handler: UsersController.create}},
+    {method: 'POST',   path: '/api/users/login', config: {auth: false, handler: UsersController.login}},
+    {method: 'GET',    path: '/api/hello',       config: {auth: 'jwt', handler: GreetingsController.hello}},
+    {method: 'POST',   path: '/api/phrases',     config: {auth: 'jwt', handler: PhrasesController.create}},
+    {method: 'GET',    path: '/api/phrases',     config: {auth: 'jwt', handler: PhrasesController.index}}
   ]
 };
 
