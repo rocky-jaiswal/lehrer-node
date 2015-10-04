@@ -19,5 +19,12 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.8.0",
     "sequelize-cli": "^1.9.1"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha 'test/**/*.js'"
   }
 }
