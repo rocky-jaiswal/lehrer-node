@@ -8,10 +8,10 @@ var Hapi   = require('hapi'),
 var server = new Hapi.Server();
 
 //Server config
-server.connection(_.pick(config.dev, ['host', 'port']));
+server.connection(_.pick(config, ['host', 'port']));
 
 //Auth
-server.register(require('hapi-auth-jwt2'), function (err) {
+server.register(require('hapi-auth-jwt2'), function(err) {
   if(err){
     console.log(err);
   }
@@ -19,9 +19,9 @@ server.register(require('hapi-auth-jwt2'), function (err) {
   server.auth.strategy(
     'jwt', 'jwt',
     {
-        key: config.dev.secretKey,
-        validateFunc: new User().validate,
-        verifyOptions: { algorithms: [ 'HS256' ] }
+      key: config.secretKey,
+      validateFunc: new User().validate,
+      verifyOptions: { algorithms: [ 'HS256' ] }
     }
   );
 
@@ -32,6 +32,6 @@ server.register(require('hapi-auth-jwt2'), function (err) {
 server.route(routes.config);
 
 // Start the server
-server.start(function () {
-    console.log('Server running at:', server.info.uri);
+server.start(function() {
+  console.log('Server running at:', server.info.uri);
 });

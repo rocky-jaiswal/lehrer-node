@@ -49,7 +49,7 @@ var User = function() {
         }
         Bcrypt.compare(password, data.dataValues.encryptedPassword, function (err, isValid) {
           if(isValid)
-            resolve({token: Jwt.sign({ id: data.dataValues.id }, config.dev.secretKey)});
+            resolve({token: Jwt.sign({ id: data.dataValues.id }, config.secretKey)});
           else
             reject({error: 'bad username or password'});
         });
