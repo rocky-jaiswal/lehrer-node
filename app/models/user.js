@@ -1,31 +1,38 @@
+'use strict';
+
 var config    = require('../../config/app'),
-    db        = require('./db'),
-    Phrase    = require('./phrase');
+    bookshelf = require('./bookshelf'),
     Promise   = require('bluebird'),
-    Bcrypt    = require('bcryptjs')
+    Bcrypt    = require('bcryptjs'),
     Jwt       = require('jsonwebtoken');
 
-var Sequelize = db.Sequelize;
-var sequelize = db.sequelize;
+var User = bookshelf.Model.extend({
+  tableName: 'users',
 
-var SQLUser = function () {
-  var columns = {
-    email: { type: Sequelize.STRING(500), allowNull: false },
-    encryptedPassword: { type: Sequelize.STRING, field: 'encrypted_password', allowNull: false },
-    admin: { type: Sequelize.BOOLEAN },
-    createdAt: { type: Sequelize.DATE },
-    updatedAt: { type: Sequelize.DATE }
-  };
+  create: function(params) {
+    const self = this;
+    return new Promise(function(resolve, reject) {
+      if(params.email === null ||
+         params.password === null ||
+         params.password.length < 6 ||
+         params.password !== params.passwordConfirmation) {
+        reject({error: 'error while validating data'});
+      } else {
+        let promise = self.save({email: params.email,
+                                 encryptedPassword: Bcrypt.hashSync(params.password, 10)});
+        promise.then(function(data) {
+          console.log(data);
+          resolve(data.dataValues);
+        });
+        promise.catch(function(e) {
+          reject({error: e});
+        });
+      }
+    });
+  },
 
-  return sequelize.define('user', columns, { freezeTableName: true });
-}();
-
-var sqlPhrase = new Phrase().sqlPhrase();
-SQLUser.hasMany(sqlPhrase);
-
-var User = function() {
-  this.validate = function (decoded, request, callback) {
-    var promise = SQLUser.find({id: decoded.id});
+  validate: function (decoded, request, callback) {
+    const promise = this.find({id: decoded.id});
     promise.then(function(data) {
       if(data === null){
         return callback(null, false);
@@ -36,12 +43,12 @@ var User = function() {
     promise.catch(function(e) {
       return callback(null, false);
     });
-  };
+  },
 
-  this.login = function(email, password) {
-    var that = this;
+  login: function(email, password) {
+    const self = this;
     return new Promise(function(resolve, reject) {
-      var promise = that.findWhere({email: email});
+      var promise = self.findWhere({email: email});
 
       promise.then(function(data) {
         if(data === null){
@@ -59,57 +66,12 @@ var User = function() {
         reject({error: e});
       });
     });
-  };
+  },
 
-  this.findWhere = function(condition) {
-    return SQLUser.find({where: condition});
-  };
-
-  this.all = function() {
-    return SQLUser.findAll();
-  };
-
-  this.create = function(params) {
-    return new Promise(function(resolve, reject) {
-      if(params.email === null ||
-        params.password === null ||
-        params.password.length < 6 ||
-        params.password !== params.passwordConfirmation) {
-          reject({error: 'error while validating data'});
-      } else {
-        var promise = SQLUser.create({email: params.email,
-                                      encryptedPassword: Bcrypt.hashSync(params.password, 10)});
-        promise.then(function(data) {
-          resolve(data.dataValues);
-        });
-        promise.catch(function(e) {
-          reject({error: e});
-        });
-      }
-    });
-  };
-
-  this.allPhrases = function(userId) {
-    return new Promise(function (resolve, reject) {
-      var promise1 = SQLUser.findById(parseInt(userId));
-      promise1.then(function(user) {
-        var promise2 = user.getPhrases();
-        promise2.then(function(data) {
-          resolve(data);
-        });
-        promise2.catch(function(e) {
-          reject({error: e});
-        });
-      });
-      promise1.catch(function(e) {
-        reject({error: e});
-      });
-    });
-  };
-
-  this.sqlUser = function() {
-    return SQLUser;
+  findWhere: function(condition) {
+    return this.find({where: condition});
   }
-};
+});
+
 
 module.exports = User;

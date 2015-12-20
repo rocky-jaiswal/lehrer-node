@@ -1,3 +1,5 @@
+'use strict';
+
 var Hapi   = require('hapi'),
     _      = require('lodash'),
     config = require('./config/app'),

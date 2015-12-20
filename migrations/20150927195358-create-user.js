@@ -1,37 +1,22 @@
 'use strict';
 
 module.exports = {
-  up: function (queryInterface, Sequelize) {
-    queryInterface.createTable('user',
-      {
-        id: {
-          type: Sequelize.BIGINT,
-          primaryKey: true,
-          autoIncrement: true
-        },
-        email: {
-          type: Sequelize.STRING(500),
-          allowNull: false
-        },
-        encryptedPassword: {
-          type: Sequelize.STRING,
-          field: 'encrypted_password',
-          allowNull: false
-        },
-        admin: {
-          type: Sequelize.BOOLEAN
-        },
-        createdAt: {
-          type: Sequelize.DATE
-        },
-        updatedAt: {
-          type: Sequelize.DATE
-        }
-      }
-    );
-  },
+  var up = function(knex, Promise) {
+    return knex.schema.createTable('users', function(table) {
+      table.increments('id').primary();
+      table.string('email');
+      table.string('encryptedPassword');
+      table.boolean('admin');
+    }).createTable('phrases', function(table) {
+      table.increments('id').primary();
+      table.string('title');
+      table.string('description');
+      table.integer('user_id').references('users.id');
+    });
+  };
 
-  down: function (queryInterface, Sequelize) {
-    queryInterface.dropTable('user');
-  }
+  var down = function(knex, Promise) {
+    return knex.schema.dropTable('users')
+      .dropTable('phrases');
+  };
 };
