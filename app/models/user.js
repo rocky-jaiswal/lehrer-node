@@ -1,7 +1,7 @@
 'use strict';
 
 var config    = require('../../config/app'),
-    bookshelf = require('./bookshelf'),
+    bookshelf = require('../../config/bookshelf'),
     Promise   = require('bluebird'),
     Bcrypt    = require('bcryptjs'),
     Jwt       = require('jsonwebtoken');
@@ -32,7 +32,7 @@ var User = bookshelf.Model.extend({
   },
 
   validate: function (decoded, request, callback) {
-    const promise = this.find({id: decoded.id});
+    const promise = new User().fetch({id: decoded.id});
     promise.then(function(data) {
       if(data === null){
         return callback(null, false);
@@ -48,15 +48,15 @@ var User = bookshelf.Model.extend({
   login: function(email, password) {
     const self = this;
     return new Promise(function(resolve, reject) {
-      var promise = self.findWhere({email: email});
+      var promise = self.fetch({email: email});
 
       promise.then(function(data) {
         if(data === null){
           reject({error: 'bad username or password'});
         }
-        Bcrypt.compare(password, data.dataValues.encryptedPassword, function (err, isValid) {
+        Bcrypt.compare(password, data.attributes.encryptedPassword, function (err, isValid) {
           if(isValid)
-            resolve({token: Jwt.sign({ id: data.dataValues.id }, config.secretKey)});
+            resolve({token: Jwt.sign({ id: data.attributes.id }, config.secretKey)});
           else
             reject({error: 'bad username or password'});
         });
@@ -66,10 +66,6 @@ var User = bookshelf.Model.extend({
         reject({error: e});
       });
     });
-  },
-
-  findWhere: function(condition) {
-    return this.find({where: condition});
   }
 });
 
