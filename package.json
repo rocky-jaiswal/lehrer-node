@@ -25,6 +25,8 @@
     "mocha": "^2.3.3"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha 'test/**/*.js'"
+    "test": "node_modules/.bin/mocha 'test/**/*.js'",
+    "migratedb": "node_modules/.bin/knex migrate:latest",
+    "serve": "node index.js"
   }
 }
