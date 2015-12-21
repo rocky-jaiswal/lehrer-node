@@ -19,13 +19,10 @@ server.register(require('hapi-auth-jwt2'), function(err) {
   }
 
   server.auth.strategy(
-    'jwt', 'jwt',
-    {
-      key: config.secretKey,
-      validateFunc: new User().validate,
-      verifyOptions: { algorithms: [ 'HS256' ] }
-    }
-  );
+    'jwt', 'jwt', { key: config.secretKey,
+                    validateFunc: User.validate,
+                    verifyOptions: { algorithms: [ 'HS256' ] }
+                  });
 
   server.auth.default('jwt');
 });

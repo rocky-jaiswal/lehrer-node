@@ -31,20 +31,6 @@ var User = bookshelf.Model.extend({
     });
   },
 
-  validate: function (decoded, request, callback) {
-    const promise = new User().fetch({id: decoded.id});
-    promise.then(function(data) {
-      if(data === null){
-        return callback(null, false);
-      } else {
-        return callback(null, true);
-      }
-    });
-    promise.catch(function(e) {
-      return callback(null, false);
-    });
-  },
-
   login: function(email, password) {
     const self = this;
     return new Promise(function(resolve, reject) {
@@ -67,6 +53,22 @@ var User = bookshelf.Model.extend({
       });
     });
   }
+}, {//class methods start
+
+  validate: function (decoded, request, callback) {
+    const promise = new User({id: decoded.id}).fetch();
+    promise.then(function(data) {
+      if(data === null){
+        return callback(null, false);
+      } else {
+        return callback(null, true);
+      }
+    });
+    promise.catch(function(e) {
+      return callback(null, false);
+    });
+  }
+
 });
 
 
