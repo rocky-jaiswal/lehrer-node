@@ -8,10 +8,9 @@ import PagesContainer from './components/pages-container';
 (function main() {
   ReactDOM.render((
     <Router>
-      <Route path="/" component={IndexContainer}>
-        <Route path="about" component={AboutContainer} />
-        <Route path="pages" component={PagesContainer} />
-      </Route>
+      <Route path="/" component={IndexContainer} />
+      <Route path="/about" component={AboutContainer} />
+      <Route path="/pages" component={PagesContainer} />
     </Router>),
     document.getElementById('app')
   );

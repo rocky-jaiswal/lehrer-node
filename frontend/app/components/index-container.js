@@ -6,6 +6,6 @@ export default class IndexContainer extends React.Component {
   }
 
   render() {
-    return <h1>Index</h1>;
-  }
-}
+    return(<h1>Index</h1>);
+
+  }}
