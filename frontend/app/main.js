@@ -1,7 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HelloComponent from './hello-component.js';
+import { Router, Route } from 'react-router';
+import IndexContainer from './components/index-container';
+import AboutContainer from './components/about-container';
+import PagesContainer from './components/pages-container';
 
 (function main() {
-  ReactDOM.render(<HelloComponent />, document.getElementById('app'));
+  ReactDOM.render((
+    <Router>
+      <Route path="/" component={IndexContainer}>
+        <Route path="about" component={AboutContainer} />
+        <Route path="pages" component={PagesContainer} />
+      </Route>
+    </Router>),
+    document.getElementById('app')
+  );
 })();
