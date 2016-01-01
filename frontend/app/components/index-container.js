@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default class IndexContainer extends React.Component {
   componentDidMount() {
@@ -6,6 +7,13 @@ export default class IndexContainer extends React.Component {
   }
 
   render() {
-    return(<h1>Index</h1>);
+    return(
+      <div>
+        <h1>Index</h1>
+        <Link to="/about">About</Link><br/>
+        <Link to="/pages">Pages</Link>
+      </div>
+    );
 
-  }}
+  }
+}
