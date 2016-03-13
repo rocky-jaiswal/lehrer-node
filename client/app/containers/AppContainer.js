@@ -1,6 +1,7 @@
 var React = require('react');
 var Navbar = require('../components/Navbar');
 var authentication = require('../services/authentication');
+var EventManager = require('../services/event_manager');
 
 var styles = {
 }
@@ -23,10 +24,14 @@ var AppContainer = React.createClass({
   },
 
   componentDidMount () {
-    authentication.onChange = this.updateAuth;
+    this.subscription = EventManager.getEmitter().addListener('authEvent', this.updateAuth);
     const promise = authentication.isAuthenticated();
     promise.then(resp => {this.setState({loggedIn: true})})
       .catch(err => {this.setState({loggedIn: false})});
+  },
+
+  componentWillUnmount () {
+    this.subscription.remove();
   },
 
   render () {

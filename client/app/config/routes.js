@@ -14,13 +14,15 @@ var Home = require('../components/Home');
 var Settings = require('../components/Settings');
 
 var authentication = require('../services/authentication');
+var EventManager = require('../services/event_manager');
 
 function checkAuth(nextState, replace, cb) {
   const promise = authentication.isAuthenticated();
   promise.then(function(resp) {
-    authentication.onChange(true);
+    EventManager.getEmitter().emit('authEvent', true);
     cb();
   }).catch(function(err) {
+    EventManager.getEmitter().emit('authEvent', false);
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }

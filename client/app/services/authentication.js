@@ -2,15 +2,11 @@ var axios = require('axios');
 
 var authentication = {
 
-  onChange () {
-  },
-
   isAuthenticated () {
     var token = localStorage.getItem('token');
     if(token) {
       return axios.get("http://localhost:3000/api/session", {headers: {"Authorization": token}});
     } else {
-      this.onChange(false);
       return new Promise(function(resolve, reject){ reject(); });
     }
   },
