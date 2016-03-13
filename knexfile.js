@@ -1,1 +1,1 @@
-module.exports = require('./config/db_config');
+module.exports = require('./server/config/db_config');

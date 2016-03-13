@@ -1,7 +1,7 @@
 'use strict';
 
-var config    = require('../../config/app'),
-    bookshelf = require('../../config/bookshelf'),
+var config    = require('./../config/app'),
+    bookshelf = require('./../config/bookshelf'),
     Promise   = require('bluebird'),
     Bcrypt    = require('bcryptjs'),
     Jwt       = require('jsonwebtoken');
@@ -42,7 +42,7 @@ var User = bookshelf.Model.extend({
         }
         Bcrypt.compare(password, data.attributes.encryptedPassword, function (err, isValid) {
           if(isValid)
-            resolve({token: Jwt.sign({ id: data.attributes.id }, config.secretKey)});
+            resolve({token: Jwt.sign({ id: data.attributes.id }, config.secretKey, {expiresIn: '1h'})});
           else
             reject({error: 'bad username or password'});
         });

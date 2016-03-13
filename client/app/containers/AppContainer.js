@@ -1,11 +1,8 @@
 var React = require('react');
 var Navbar = require('../components/Navbar');
+var authentication = require('../services/authentication');
 
 var styles = {
-  container: {
-    width: '100%',
-    height: '92%'
-  }
 }
 
 var AppContainer = React.createClass({
@@ -13,17 +10,32 @@ var AppContainer = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState() {
+  getInitialState () {
     return {
       loggedIn: false
     }
   },
 
+  updateAuth(loggedIn) {
+    this.setState({
+      loggedIn: loggedIn
+    })
+  },
+
+  componentDidMount () {
+    authentication.onChange = this.updateAuth;
+    const promise = authentication.isAuthenticated();
+    promise.then(resp => {this.setState({loggedIn: true})})
+      .catch(err => {this.setState({loggedIn: false})});
+  },
+
   render () {
     return (
-      <div className="container">
+      <div className="container is-fluid">
         <Navbar loggedIn={this.state.loggedIn}/>
-        {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn })}
+        <div className="columns">
+          {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn })}
+        </div>
       </div>
     )
   }

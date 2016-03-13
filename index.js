@@ -2,18 +2,25 @@
 
 var Hapi   = require('hapi'),
     _      = require('lodash'),
-    config = require('./config/app'),
-    routes = require('./config/routes'),
-    User   = require('./app/models/user');
+    config = require('./server/config/app'),
+    routes = require('./server/config/routes'),
+    User   = require('./server/models/user');
 
 // Create a server with a host and port
 var server = new Hapi.Server();
 
 //Server config
-server.connection(_.pick(config, ['host', 'port']));
+server.connection(_.pick(config, ['host', 'port', 'routes']));
+
+var goodOptions = {
+  reporters: [{
+    reporter: require('good-console'),
+    events: { log: '*', request: '*', response: '*' }
+  }]
+};
 
 //Auth
-server.register(require('hapi-auth-jwt2'), function(err) {
+server.register([require('hapi-auth-jwt2'), { register: require('good'), options: goodOptions }], function(err) {
   if(err){
     console.log(err);
   }

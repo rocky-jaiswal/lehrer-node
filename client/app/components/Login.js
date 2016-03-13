@@ -1,17 +1,57 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+var authentication = require('../services/authentication');
 
 var styles = {
+  error: {
+    color: '#FF0000',
+    marginTop: '15px'
+  }
 }
 
 var Login = React.createClass({
-  render: function () {
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
+  getInitialState() {
+    return { error: false }
+  },
+
+  onSubmitLogin(event) {
+    event.preventDefault();
+
+    const email = this.refs.email.value;
+    const pass = this.refs.password.value;
+
+    authentication.login(email, pass, (loggedIn) => {
+      if (loggedIn)
+        this.context.router.push({pathname: '/'});
+      else
+        return this.setState({ error: true });
+    });
+  },
+
+  render() {
     return (
-      <form>
-        <label><input ref="email" placeholder="email" /></label>
-        <label><input ref="pass" placeholder="password" /></label>
-        <button type="submit">Login</button>
-      </form>
+      <section className="column is-offset-6 is-4">
+        <form onSubmit={this.onSubmitLogin}>
+          <p className="control">
+            <input className="input" type="email" placeholder="Email" ref="email"/>
+          </p>
+          <p className="control">
+            <input className="input" type="password" placeholder="Password" ref="password"/>
+          </p>
+          <p className="control">
+            <button className="button is-success">
+              Login
+            </button>
+          </p>
+        </form>
+        {this.state.error && (
+            <p style={styles.error}>Bad login information</p>
+        )}
+      </section>
     )
   }
 })

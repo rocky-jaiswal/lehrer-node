@@ -2,6 +2,7 @@ var config = {
   development: {
     host: 'localhost',
     port: 3000,
+    routes: {cors: true},
     secretKey: 'so74565467rs3cr3t132189328213213n123123dasd12341239i0dsf'
   },
   test: {

@@ -5,7 +5,7 @@
 var Lab    = require("lab");
 var lab    = exports.lab = Lab.script();
 var Code   = require("code");
-var server = require('../../index.js');
+var server = require('../../../index.js');
 
 
 lab.experiment('the backend API', function() {

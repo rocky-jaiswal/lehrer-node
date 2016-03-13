@@ -7,28 +7,36 @@ var hashHistory = ReactRouter.hashHistory;
 var IndexRoute = ReactRouter.IndexRoute;
 
 var AppContainer = require('../containers/AppContainer');
-var MainContainer = require('../containers/MainContainer');
-
 var Login = require('../components/Login');
 var Register = require('../components/Register');
+var Logout = require('../components/Logout');
 var Home = require('../components/Home');
+var Settings = require('../components/Settings');
 
-function requireAuth(nextState, replace) {
-  if (true) {
+var authentication = require('../services/authentication');
+
+function checkAuth(nextState, replace, cb) {
+  const promise = authentication.isAuthenticated();
+  promise.then(function(resp) {
+    authentication.onChange(true);
+    cb();
+  }).catch(function(err) {
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
-    })
-  }
+    });
+    cb();
+  });
 }
 
 var routes = (
   <Router history={hashHistory}>
     <Route path='/' component={AppContainer}>
-      <IndexRoute component={MainContainer} />
+      <IndexRoute component={Home} onEnter={checkAuth} />
       <Route path="login" component={Login}/>
       <Route path="register" component={Register}/>
-      <Route path="home" component={Home} onEnter={requireAuth} />
+      <Route path="logout" component={Logout} />
+      <Route path="settings" component={Settings} onEnter={checkAuth} />
     </Route>
   </Router>
 );

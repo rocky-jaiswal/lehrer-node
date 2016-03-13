@@ -2,7 +2,7 @@
 
 var Phrase = require('./../models/phrase'),
     User   = require('./../models/user'),
-    config = require('../../config/app');
+    config = require('./../config/app');
 
 var phrasesController = function() {
   return {

@@ -4,16 +4,16 @@ var PropTypes = React.PropTypes;
 var styles = {
 }
 
-var Home = React.createClass({
+var Settings = React.createClass({
   render: function () {
     return (
       <section className="column is-12">
         <div className="hero">
-          <h1>Welcome Home!</h1>
+          <h1>Settings</h1>
         </div>
       </section>
     )
   }
 })
 
-module.exports = Home;
+module.exports = Settings;
