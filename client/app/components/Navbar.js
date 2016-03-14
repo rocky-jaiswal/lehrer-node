@@ -8,6 +8,10 @@ var styles = {
     backgroundColor: "#ecf0f1",
     height: "75px",
     padding: "10px"
+  },
+  heading: {
+    color: "#34495e"
+
   }
 }
 
@@ -45,7 +49,7 @@ var Navbar = React.createClass({
     return (
       <nav className="navbar" style={styles.head}>
         <span className="navbar-item is-text-centered">
-          <h1 className="title">Lehrer</h1>
+          <h1 className="title"><Link to="/" style={styles.heading}>Lehrer</Link></h1>
         </span>
         {this.props.loggedIn? this.loggedIn() : this.notLoggedIn()}
       </nav>
