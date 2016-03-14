@@ -1,7 +1,7 @@
 var React = require('react');
 var Navbar = require('../components/Navbar');
 var authentication = require('../services/authentication');
-var EventManager = require('../services/event_manager');
+var eventManager = require('../services/event_manager');
 
 var styles = {
 }
@@ -24,7 +24,7 @@ var AppContainer = React.createClass({
   },
 
   componentDidMount () {
-    this.subscription = EventManager.getEmitter().addListener('authEvent', this.updateAuth);
+    this.subscription = eventManager.getEmitter().addListener(eventManager.authChannel, this.updateAuth);
     const promise = authentication.isAuthenticated();
     promise.then(resp => {this.setState({loggedIn: true})})
       .catch(err => {this.setState({loggedIn: false})});

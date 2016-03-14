@@ -21,8 +21,7 @@ var User = bookshelf.Model.extend({
         let promise = self.save({email: params.email,
                                  encryptedPassword: Bcrypt.hashSync(params.password, 10)});
         promise.then(function(data) {
-          console.log(data);
-          resolve(data.dataValues);
+          resolve(this.token(data.attributes.id));
         });
         promise.catch(function(e) {
           reject({error: e});
@@ -42,16 +41,20 @@ var User = bookshelf.Model.extend({
         }
         Bcrypt.compare(password, data.attributes.encryptedPassword, function (err, isValid) {
           if(isValid)
-            resolve({token: Jwt.sign({ id: data.attributes.id }, config.secretKey, {expiresIn: '1h'})});
+            resolve(this.token(data.attributes.id));
           else
             reject({error: 'bad username or password'});
-        });
+        }.bind(this));
       });
 
       promise.catch(function(e) {
         reject({error: e});
       });
     });
+  },
+
+  token: function(userId) {
+    return({token: Jwt.sign({ id: userId }, config.secretKey, {expiresIn: '1h'})});
   }
 }, {//class methods start
 
