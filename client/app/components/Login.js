@@ -35,6 +35,7 @@ var Login = React.createClass({
   render() {
     return (
       <section className="column is-offset-6 is-4">
+        <h1 className="title">Login</h1>
         <form onSubmit={this.onSubmitLogin}>
           <p className="control">
             <input className="input" type="email" placeholder="Email" ref="email"/>

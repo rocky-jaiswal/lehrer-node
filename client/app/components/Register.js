@@ -46,6 +46,7 @@ var Register = React.createClass({
   render() {
     return (
       <section className="column is-offset-6 is-4">
+        <h1 className="title">Register</h1>
         <form onSubmit={this.onSubmitRegister}>
           <p className="control">
             <input className="input" type="email" placeholder="Email" ref="email"/>
@@ -58,7 +59,7 @@ var Register = React.createClass({
           </p>
           <p className="control">
             <button className="button is-primary">
-              Login
+              Register
             </button>
           </p>
         </form>

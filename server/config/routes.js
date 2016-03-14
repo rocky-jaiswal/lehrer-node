@@ -1,4 +1,4 @@
-var GreetingsController = require('../controllers/greetings_controller'),
+var GreetingController = require('../controllers/greeting_controller'),
     UsersController     = require('../controllers/users_controller'),
     SessionsController  = require('../controllers/sessions_controller'),
     PhrasesController   = require('../controllers/phrases_controller');
@@ -6,7 +6,7 @@ var GreetingsController = require('../controllers/greetings_controller'),
 
 var routes = {
   config: [
-    {method: 'GET',  path: '/api/hello',   config: {handler: GreetingsController.hello}},
+    {method: 'GET',  path: '/api/greeting',   config: {handler: GreetingController.show}},
     {method: 'POST', path: '/api/users',   config: {auth: false, handler: UsersController.create}},
     {method: 'GET',  path: '/api/session', config: {handler: SessionsController.show}},
     {method: 'POST', path: '/api/session', config: {auth: false, handler: SessionsController.create}},

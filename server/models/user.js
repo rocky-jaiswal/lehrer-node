@@ -58,6 +58,10 @@ var User = bookshelf.Model.extend({
   }
 }, {//class methods start
 
+  find: function(userId) {
+    return new User({id: userId}).fetch();
+  },
+
   validate: function (decoded, request, callback) {
     const promise = new User({id: decoded.id}).fetch();
     promise.then(function(data) {
