@@ -12,6 +12,7 @@ var server = new Hapi.Server();
 //Server config
 server.connection(_.pick(config, ['host', 'port', 'routes']));
 
+//Logging setup
 var goodOptions = {
   reporters: [{
     reporter: require('good-console'),
