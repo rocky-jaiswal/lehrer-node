@@ -1,11 +1,10 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
+import React, { PropTypes } from 'react'
 
-var styles = {
+const styles = {
 }
 
-var Settings = React.createClass({
-  render: function () {
+const Settings = React.createClass({
+  render () {
     return (
       <section className="column is-12">
         <div className="hero">
@@ -14,6 +13,6 @@ var Settings = React.createClass({
       </section>
     )
   }
-})
+});
 
-module.exports = Settings;
+export default Settings

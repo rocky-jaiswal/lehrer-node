@@ -1,12 +1,12 @@
-var React = require('react');
-var Navbar = require('../components/Navbar');
-var authentication = require('../services/authentication');
-var eventManager = require('../services/event_manager');
+import React from 'react'
+import Navbar from '../components/Navbar'
+import authentication from '../services/authentication'
+import eventManager from '../services/event_manager'
 
-var styles = {
+const styles = {
 }
 
-var AppContainer = React.createClass({
+const AppContainer = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -17,7 +17,7 @@ var AppContainer = React.createClass({
     }
   },
 
-  updateAuth(loggedIn) {
+  updateAuth (loggedIn) {
     this.setState({
       loggedIn: loggedIn
     })
@@ -44,6 +44,6 @@ var AppContainer = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = AppContainer;
+export default AppContainer

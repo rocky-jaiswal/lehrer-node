@@ -1,24 +1,23 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
-var authentication = require('../services/authentication');
+import React, { PropTypes } from 'react'
+import authentication from '../services/authentication';
 
-var styles = {
+const styles = {
   error: {
     color: '#FF0000',
     marginTop: '15px'
   }
 }
 
-var Login = React.createClass({
+const Login = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState() {
+  getInitialState () {
     return { error: false }
   },
 
-  onSubmitLogin(event) {
+  onSubmitLogin (event) {
     event.preventDefault();
 
     const email = this.refs.email.value;
@@ -32,7 +31,7 @@ var Login = React.createClass({
     });
   },
 
-  render() {
+  render () {
     return (
       <section className="column is-offset-6 is-4">
         <h1 className="title">Login</h1>
@@ -55,6 +54,6 @@ var Login = React.createClass({
       </section>
     )
   }
-})
+});
 
-module.exports = Login;
+export default Login

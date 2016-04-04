@@ -1,11 +1,10 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
-var greeting = require('../services/greeting');
+import React, { PropTypes } from 'react'
+import greeting from '../services/greeting'
 
-var styles = {
+const styles = {
 }
 
-var Home = React.createClass({
+const Home = React.createClass({
   getInitialState () {
     return {
       message: ''
@@ -18,7 +17,7 @@ var Home = React.createClass({
       .catch(err => {this.setState({message: 'An error occured!'})});
   },
 
-  render: function () {
+  render () {
     return (
       <section className="column is-12">
         <div className="hero">
@@ -27,6 +26,6 @@ var Home = React.createClass({
       </section>
     )
   }
-})
+});
 
-module.exports = Home;
+export default Home

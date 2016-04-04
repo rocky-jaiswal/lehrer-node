@@ -1,6 +1,6 @@
-var axios = require('axios');
+import axios from 'axios'
 
-var greeting = {
+const greeting = {
 
   fetch () {
     const token = localStorage.getItem('token');
@@ -13,4 +13,4 @@ var greeting = {
 
 }
 
-module.exports = greeting;
+export default greeting

@@ -1,6 +1,6 @@
-var axios = require('axios');
+import axios from 'axios'
 
-var authentication = {
+const authentication = {
 
   isAuthenticated () {
     const token = localStorage.getItem('token');
@@ -42,4 +42,4 @@ var authentication = {
 
 }
 
-module.exports = authentication;
+export default authentication

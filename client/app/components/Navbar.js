@@ -1,7 +1,5 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
-var ReactRouter = require('react-router');
-var Link = ReactRouter.Link;
+import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 
 var styles = {
   head: {
@@ -13,10 +11,11 @@ var styles = {
     color: "#34495e"
 
   }
-}
+};
 
-var Navbar = React.createClass({
-  notLoggedIn: function () {
+const Navbar = React.createClass({
+
+  notLoggedIn () {
     return(
       <div className="navbar-right">
         <span className="navbar-item">
@@ -29,7 +28,7 @@ var Navbar = React.createClass({
     );
   },
 
-  loggedIn: function () {
+  loggedIn () {
     return(
       <div className="navbar-right">
         <span className="navbar-item">
@@ -45,7 +44,7 @@ var Navbar = React.createClass({
     );
   },
 
-  render: function () {
+  render () {
     return (
       <nav className="navbar" style={styles.head}>
         <span className="navbar-item is-text-centered">
@@ -55,6 +54,7 @@ var Navbar = React.createClass({
       </nav>
     );
   }
+
 })
 
-module.exports = Navbar;
+export default Navbar

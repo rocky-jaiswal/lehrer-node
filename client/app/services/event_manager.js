@@ -1,4 +1,4 @@
-var {EventEmitter} = require('fbemitter');
+import {EventEmitter} from 'fbemitter';
 
 const EventManager = function () {
   this.emitter = this.emitter || new EventEmitter();
@@ -10,4 +10,4 @@ const EventManager = function () {
   }
 }
 
-module.exports = new EventManager();
+export default new EventManager();

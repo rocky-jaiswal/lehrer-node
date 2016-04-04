@@ -1,20 +1,15 @@
-var React = require('react');
-var ReactRouter = require('react-router');
+import React from 'react'
+import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var hashHistory = ReactRouter.hashHistory;
-var IndexRoute = ReactRouter.IndexRoute;
+import AppContainer from '../containers/AppContainer'
+import Login from '../components/Login'
+import Register from '../components/Register'
+import Logout from '../components/Logout'
+import Home from '../components/Home'
+import Settings from '../components/Settings'
 
-var AppContainer = require('../containers/AppContainer');
-var Login = require('../components/Login');
-var Register = require('../components/Register');
-var Logout = require('../components/Logout');
-var Home = require('../components/Home');
-var Settings = require('../components/Settings');
-
-var authentication = require('../services/authentication');
-var eventManager = require('../services/event_manager');
+import authentication from '../services/authentication'
+import eventManager from '../services/event_manager'
 
 function checkAuth(nextState, replace, cb) {
   const promise = authentication.isAuthenticated();
@@ -31,7 +26,7 @@ function checkAuth(nextState, replace, cb) {
   });
 }
 
-var routes = (
+const routes = (
   <Router history={hashHistory}>
     <Route path='/' component={AppContainer}>
       <IndexRoute component={Home} onEnter={checkAuth} />
@@ -43,4 +38,4 @@ var routes = (
   </Router>
 );
 
-module.exports = routes;
+export default routes

@@ -1,6 +1,5 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
-var authentication = require('../services/authentication');
+import React, { PropTypes } from 'react'
+import authentication from '../services/authentication'
 
 var styles = {
   error: {
@@ -9,19 +8,19 @@ var styles = {
   }
 }
 
-var Register = React.createClass({
+const Register = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState() {
+  getInitialState () {
     return {
       error: false,
       errorMsg: '',
     }
   },
 
-  onSubmitRegister(event) {
+  onSubmitRegister (event) {
     event.preventDefault();
 
     const email = this.refs.email.value;
@@ -43,7 +42,7 @@ var Register = React.createClass({
     }
   },
 
-  render() {
+  render () {
     return (
       <section className="column is-offset-6 is-4">
         <h1 className="title">Register</h1>
@@ -69,6 +68,6 @@ var Register = React.createClass({
       </section>
     )
   }
-})
+});
 
-module.exports = Register;
+export default Register
