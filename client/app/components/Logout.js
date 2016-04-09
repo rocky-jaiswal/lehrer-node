@@ -15,7 +15,7 @@ const Logout = React.createClass({
   render() {
     return (
       <section className="column is-offset-6 is-6">
-        <p>You are now logged out. Click <Link to="/login">here</Link> to log back in.</p>
+        <p>You are now logged out. Click <Link to="/">here</Link> to log back in.</p>
       </section>
     )
   },

@@ -9,20 +9,20 @@ var styles = {
   },
   heading: {
     color: "#34495e"
-
   }
 };
 
 const Navbar = React.createClass({
 
+  showAuth: function() {
+    this.props.lock.show()
+  },
+
   notLoggedIn () {
     return(
       <div className="navbar-right">
         <span className="navbar-item">
-          <Link to="/login">Login</Link>
-        </span>
-        <span className="navbar-item">
-          <Link to="/register">Register</Link>
+          <button className="button" onClick={this.showAuth}>Sign Up / Sign In</button>
         </span>
       </div>
     );
@@ -50,7 +50,7 @@ const Navbar = React.createClass({
         <span className="navbar-item is-text-centered">
           <h1 className="title"><Link to="/" style={styles.heading}>Lehrer</Link></h1>
         </span>
-        {this.props.loggedIn? this.loggedIn() : this.notLoggedIn()}
+        {this.props.loggedIn ? this.loggedIn() : this.notLoggedIn()}
       </nav>
     );
   }

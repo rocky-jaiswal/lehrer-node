@@ -3,7 +3,7 @@ import axios from 'axios'
 const greeting = {
 
   fetch () {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     if(token) {
       return axios.get("http://localhost:3000/api/greeting", {headers: {"Authorization": token}});
     } else {

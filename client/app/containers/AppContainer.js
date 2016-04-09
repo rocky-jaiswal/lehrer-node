@@ -11,35 +11,39 @@ const AppContainer = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       loggedIn: false
     }
   },
 
-  updateAuth (loggedIn) {
+  updateAuth(loggedIn) {
     this.setState({
       loggedIn: loggedIn
     })
   },
 
-  componentDidMount () {
-    this.subscription = eventManager.getEmitter().addListener(eventManager.authChannel, this.updateAuth);
-    const promise = authentication.isAuthenticated();
-    promise.then(resp => {this.setState({loggedIn: true})})
-      .catch(err => {this.setState({loggedIn: false})});
+  componentWillMount() {
+    this.lock = new Auth0Lock('KvvSjBA18edefOpruILVTTeXMcbHaRFV', 'rockyj.eu.auth0.com')
+    this.subscription = eventManager.getEmitter().addListener(eventManager.authChannel, this.updateAuth)
+    if(authentication.isAuthenticated()) {
+      this.setState({loggedIn: true})
+      this.context.router.push({ pathname: '/home' })
+    } else {
+      this.setState({loggedIn: false})
+    }
   },
 
-  componentWillUnmount () {
-    this.subscription.remove();
+  componentWillUnmount() {
+    this.subscription.remove()
   },
 
-  render () {
+  render() {
     return (
       <div className="container is-fluid">
-        <Navbar loggedIn={this.state.loggedIn}/>
+        <Navbar loggedIn={this.state.loggedIn} lock={this.lock}/>
         <div className="columns">
-          {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn })}
+          {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, lock: this.lock })}
         </div>
       </div>
     )
