@@ -56,5 +56,12 @@
     "lint": "eslint ./client/app",
     "webpack": "webpack-dev-server",
     "webpack-prod": "webpack -p"
+  },
+  "babel": {
+    "presets": [
+      "react",
+      "babel-preset-es2015",
+      "babel-preset-stage-3"
+    ]
   }
 }

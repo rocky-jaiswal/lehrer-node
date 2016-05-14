@@ -1,6 +1,6 @@
 const db_config = {
   development: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       user:     "postgresdev",
       password: "postgresdev",
@@ -13,7 +13,7 @@ const db_config = {
     }
   },
   test: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       user:     "postgresdev",
       password: "postgresdev",
@@ -27,5 +27,5 @@ const db_config = {
   },
 };
 
-var env = process.env['NODE_ENV'] || 'development';
+const env = process.env['NODE_ENV'] || 'development';
 module.exports = db_config[env];
