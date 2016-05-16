@@ -6,7 +6,7 @@ const session = (state = [], action = {}) => {
         token: action.token,
         authLock: state.authLock
       }
-    case 'LOGOUT':
+    case 'LOGGED_OUT':
       return {
         loggedIn: false,
         token: null,

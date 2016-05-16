@@ -1,6 +1,6 @@
 export const login = (token) => {
   return {
-    type: 'LOGGED_IN',
+    type: 'LOGIN',
     token: token
   }
 }
