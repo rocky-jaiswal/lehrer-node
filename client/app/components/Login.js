@@ -1,36 +1,39 @@
 import React from 'react'
-import authentication from '../services/authentication'
-
 
 const Login = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired,
   },
 
-  checkIfCallback() {
-    const authHash = this.props.lock.parseHash(window.location.hash)
+  checkIfCallback(authLock) {
+    const authHash = authLock.parseHash(window.location.hash)
     if (authHash) {
       if (authHash.id_token) {
-        authentication.login(authHash.id_token)
-        this.context.router.push({ pathname: '/home' })
+        this.props.login(authHash.id_token)
       }
       if (authHash.error) {
-        console.log("Error signing in", authHash)
+        console.error("Error signing in", authHash)
       }
     }
   },
 
-  componentDidMount() {
+  componentWillUpdate(newProps) {
+    if(newProps.loggedIn) {
+      this.context.router.push('/home')
+    }
+  },
+
+  componentWillMount() {
     if (this.props.loggedIn) {
-      this.context.router.push({ pathname: '/home' })
+      this.context.router.push('/home')
     } else {
-      this.checkIfCallback()
+      this.checkIfCallback(this.props.authLock)
     }
   },
 
   render() {
     return (
-      <section className="column is-offset-4 is-4">
+      <section className="column">
         <h1 className="title">Welcome to Lehrer</h1>
       </section>
     )

@@ -1,5 +1,3 @@
-import eventManager from './event_manager'
-
 const authentication = {
 
   isAuthenticated () {
@@ -8,12 +6,12 @@ const authentication = {
 
   login (token) {
     localStorage.setItem('userToken', token)
-    eventManager.getEmitter().emit(eventManager.authChannel, true)
+    return true
   },
 
   logout () {
     localStorage.removeItem('userToken')
-    return true;
+    return true
   },
 
 }

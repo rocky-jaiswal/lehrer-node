@@ -15,7 +15,7 @@ var styles = {
 const Navbar = React.createClass({
 
   showAuth: function() {
-    this.props.lock.show()
+    this.props.authLock.show()
   },
 
   notLoggedIn () {
