@@ -49,7 +49,7 @@ const routes = (
       <Route path='/' component={AppContainer}>
         <IndexRoute component={Login} />
         <Route path="logout" component={Logout} />
-        <Route path="home" component={Home} />
+        <Route path="home" component={Home} onEnter={checkAuth} />
         <Route path="settings" component={Settings} onEnter={checkAuth} />
       </Route>
     </Router>
