@@ -9,7 +9,7 @@ var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   entry: [
     'babel-polyfill',
-    './client/app/index.js'
+    './client/app/app.js'
   ],
   output: {
     path: __dirname + '/client/dist',

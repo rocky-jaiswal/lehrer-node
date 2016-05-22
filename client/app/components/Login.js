@@ -18,12 +18,14 @@ const Login = React.createClass({
   },
 
   componentWillUpdate(newProps) {
+    console.log(newProps)
     if(newProps.loggedIn) {
       this.context.router.push('/home')
     }
   },
 
   componentWillMount() {
+    console.log(this.props)
     if (this.props.loggedIn) {
       this.context.router.push('/home')
     } else {

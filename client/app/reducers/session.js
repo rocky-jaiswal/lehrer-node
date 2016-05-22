@@ -12,6 +12,8 @@ const session = (state = [], action = {}) => {
         token: null,
         authLock: state.authLock
       }
+    case '@@router/LOCATION_CHANGE':
+      return state
     default:
       return {
         loggedIn: false,
