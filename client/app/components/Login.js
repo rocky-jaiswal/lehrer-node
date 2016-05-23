@@ -1,9 +1,6 @@
 import React from 'react'
 
 const Login = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired,
-  },
 
   checkIfCallback(authLock) {
     const authHash = authLock.parseHash(window.location.hash)
@@ -18,16 +15,16 @@ const Login = React.createClass({
   },
 
   componentWillUpdate(newProps) {
-    console.log(newProps)
+    //console.log(newProps)
     if(newProps.loggedIn) {
-      this.context.router.push('/home')
+      this.props.goto('/home')
     }
   },
 
   componentWillMount() {
-    console.log(this.props)
+    //console.log(this.props)
     if (this.props.loggedIn) {
-      this.context.router.push('/home')
+      this.props.goto('/home')
     } else {
       this.checkIfCallback(this.props.authLock)
     }

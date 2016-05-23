@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { login, logout } from '../actions'
+import { push } from 'react-router-redux'
 
+import { login, logout } from '../actions'
 import Navbar from '../components/Navbar'
 
 const styles = {
@@ -18,6 +19,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     logout: () => {
       dispatch(logout())
+    },
+    goto: (path) => {
+      dispatch(push(path))
     }
   }
 }
@@ -31,7 +35,8 @@ const AppContainer = React.createClass({
           {React.cloneElement(this.props.children, { loggedIn: this.props.session.loggedIn,
                                                      authLock: this.props.session.authLock,
                                                      login: this.props.login,
-                                                     logout: this.props.logout })}
+                                                     logout: this.props.logout,
+                                                     goto: this.props.goto })}
         </div>
       </div>
     )

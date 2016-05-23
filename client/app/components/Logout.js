@@ -2,13 +2,10 @@ import React from 'react'
 import { Link } from 'react-router'
 
 const Logout = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired,
-  },
 
   componentDidMount() {
     this.props.logout()
-    this.context.router.push('/')
+    this.props.goto('/')
   },
 
   render() {
