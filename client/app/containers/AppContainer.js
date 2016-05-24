@@ -1,8 +1,9 @@
 import React from 'react'
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import { login, logout } from '../actions'
+import * as actionCreators from '../actions'
 import Navbar from '../components/Navbar'
 
 const styles = {
@@ -13,17 +14,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    login: (token) => {
-      dispatch(login(token))
-    },
-    logout: () => {
-      dispatch(logout())
-    },
+  return Object.assign(bindActionCreators(actionCreators, dispatch), {
     goto: (path) => {
       dispatch(push(path))
     }
-  }
+  })
 }
 
 const AppContainer = React.createClass({
